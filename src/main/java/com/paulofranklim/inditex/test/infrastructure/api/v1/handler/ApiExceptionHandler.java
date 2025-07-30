@@ -1,5 +1,6 @@
-package com.paulofranklim.inditex.test.infrastructure.exception;
+package com.paulofranklim.inditex.test.infrastructure.api.v1.handler;
 
+import com.paulofranklim.inditex.test.domain.exception.PriceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

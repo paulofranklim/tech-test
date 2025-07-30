@@ -3,7 +3,6 @@ package com.paulofranklim.inditex.test.infrastructure.api.v1.controller;
 import com.paulofranklim.inditex.test.domain.model.Price;
 import com.paulofranklim.inditex.test.domain.usecase.GetPriceUseCase;
 import com.paulofranklim.inditex.test.infrastructure.api.v1.dto.PriceResponseDTO;
-import com.paulofranklim.inditex.test.infrastructure.exception.PriceNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +35,7 @@ public class PriceController {
             @RequestParam("brandId")
             @Parameter(example = "1") Long brandId
     ) {
-        Price price = getPriceUseCase.execute(brandId, productId, applicationDate)
-                                     .orElseThrow(() -> new PriceNotFoundException(brandId, productId, applicationDate));
+        Price price = getPriceUseCase.execute(brandId, productId, applicationDate);
 
         PriceResponseDTO response = PriceResponseDTO.builder()
                                                     .productId(price.getProductId())

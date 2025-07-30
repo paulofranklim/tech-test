@@ -1,4 +1,4 @@
-package com.paulofranklim.inditex.test.infrastructure.exception;
+package com.paulofranklim.inditex.test.domain.exception;
 
 import java.time.LocalDateTime;
 
