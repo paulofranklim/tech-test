@@ -2,9 +2,8 @@ package com.paulofranklim.inditex.test.infrastructure.api.v1.controller;
 
 import com.paulofranklim.inditex.test.domain.model.Price;
 import com.paulofranklim.inditex.test.domain.usecase.GetPriceUseCase;
-import com.paulofranklim.inditex.test.infrastructure.api.v1.dto.PriceResponseDTO;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
+import com.paulofranklim.inditex.test.infrastructure.api.v1.generated.controller.DefaultApi;
+import com.paulofranklim.inditex.test.infrastructure.api.v1.generated.model.PriceResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -18,22 +17,18 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/api/v1/prices")
 @RequiredArgsConstructor
-public class PriceController {
+public class PriceController  implements DefaultApi {
 
     private final GetPriceUseCase getPriceUseCase;
 
     @GetMapping
-    @Operation(summary = "Price check by date, product and brand")
     public ResponseEntity<PriceResponseDTO> getPrice(
             @RequestParam("applicationDate")
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-            @Parameter(example = "2020-06-14T16:00:00") LocalDateTime applicationDate,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime applicationDate,
 
-            @RequestParam("productId")
-            @Parameter(example = "35455") Long productId,
+            @RequestParam("productId") Long productId,
 
-            @RequestParam("brandId")
-            @Parameter(example = "1") Long brandId
+            @RequestParam("brandId") Long brandId
     ) {
         Price price = getPriceUseCase.execute(brandId, productId, applicationDate);
 

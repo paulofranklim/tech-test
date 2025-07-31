@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<openapi-generator.version>7.14.0</openapi-generator.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -69,6 +70,10 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.7.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -94,8 +99,53 @@
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 						</exclude>
+						<exclude>
+							<groupId>org.openapitools</groupId>
+							<artifactId>openapi-generator-maven-plugin</artifactId>
+						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>${openapi-generator.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>
+								${project.basedir}/src/main/resources/openapi.yaml
+							</inputSpec>
+							<generatorName>spring</generatorName>
+							<library>spring-boot</library>
+							<apiPackage>com.paulofranklim.inditex.test.infrastructure.api.v1.generated.controller</apiPackage>
+							<modelPackage>com.paulofranklim.inditex.test.infrastructure.api.v1.generated.model</modelPackage>
+							<output>${project.build.directory}/generated-sources/openapi</output>
+							<configOptions>
+								<modelLombokAnnotations>true</modelLombokAnnotations>
+								<additionalModelTypeAnnotations>@lombok.Builder</additionalModelTypeAnnotations>
+								<useLombok>true</useLombok>
+								<dateLibrary>java8</dateLibrary>
+								<interfaceOnly>true</interfaceOnly>
+								<skipFormModel>true</skipFormModel>
+								<hideGenerationTimestamp>true</hideGenerationTimestamp>
+								<useTags>true</useTags>
+								<openApiNullable>false</openApiNullable>
+								<useSpringController>true</useSpringController>
+								<useSpringBoot3>true</useSpringBoot3>
+							</configOptions>
+							<typeMappings>
+								<typeMapping>OffsetDateTime=java.time.LocalDateTime</typeMapping>
+							</typeMappings>
+							<importMappings>
+								<importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
+							</importMappings>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

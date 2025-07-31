@@ -1,0 +1,109 @@
+openapi: 3.0.1
+info:
+  title: Tech Test Inditex Prices API
+  version: v1.0.0
+  description: API for checking prices of Inditex products, following the hexagonal architecture.
+  termsOfService: http://swagger.io/terms/
+  license:
+    name: Apache 2.0
+    url: http://springdoc.org
+servers:
+  - url: http://localhost:8080
+    description: Local server
+paths:
+  /api/v1/prices:
+    get:
+      summary: Price check by date, product and brand
+      operationId: getPrice
+      parameters:
+        - name: applicationDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+            example: 2020-06-14T16:00:00
+        - name: productId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 35455
+        - name: brandId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceResponseDTO'
+        '404':
+          description: Price not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    PriceResponseDTO:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+          example: 35455
+        brandId:
+          type: integer
+          format: int64
+          example: 1
+        priceList:
+          type: integer
+          format: int32
+          example: 2
+        startDate:
+          type: string
+          format: date-time
+          example: 2020-06-14T15:00:00
+        endDate:
+          type: string
+          format: date-time
+          example: 2020-06-14T18:30:00
+        price:
+          type: number
+          format: big decimal
+          example: 25.45
+        currency:
+          type: string
+          example: EUR
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: 2025-07-31T18:00:00Z
+        error:
+          type: string
+          example: "Not Found"
+        details:
+          type: string
+          example: "Price not found for the given parameters."
